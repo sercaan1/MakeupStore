@@ -36,3 +36,5 @@ update-database -Context AppIdentityDbContext
 
 ## Useful Links
 https://www.connectionstrings.com/npgsql/
+
+https://gist.github.com/yigith/c6f999788b833dc3d22ac6332a053dd1

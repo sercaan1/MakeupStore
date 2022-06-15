@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Constants;
 using Web.Interfaces;
 using Web.Models;
 
@@ -23,9 +24,13 @@ namespace Web.Services
             _brandRepo = brandRepo;
             _categoryRepo = categoryRepo;
         }
-        public async Task<HomeViewModel> GetHomeViewModelAsync(int? brandId, int? categoryId)
+        public async Task<HomeViewModel> GetHomeViewModelAsync(int? brandId, int? categoryId, int pageId)
         {
-            var specProducts = new ProductsFilterSpecification(brandId, categoryId);
+            int skip = (pageId - 1) * Constant.ITEMS_PER_PAGE;
+            int take = Constant.ITEMS_PER_PAGE;
+            var specProducts = new ProductsFilterSpecification(brandId, categoryId, skip, take);
+            var specAllProducts = new ProductsFilterSpecification(brandId, categoryId);
+            var allProductsCount = await _productRepo.CountAsync(specAllProducts);
             var products = await _productRepo.GetAllAsync(specProducts);
 
             var viewModel = new HomeViewModel()
@@ -40,7 +45,13 @@ namespace Web.Services
                 Brands = await GetBrandsAsync(),
                 Categories = await GetCategoriesAsync(),
                 BrandId = brandId,
-                CategoryId = categoryId
+                CategoryId = categoryId,
+                PaginationInfo = new PaginationInfoViewModel()
+                {
+                    CurrentPage = pageId,
+                    TotalItems = allProductsCount,
+                    ItemsOnPage = products.Count
+                }
             };
 
             return viewModel;
