@@ -27,7 +27,9 @@ Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 5.0.17
 ## Migrations
 ```
 /Infrastructure
-add-migration InitialCreate -Context StoreContext -output Data/Migrations
+add-migration InitialCreate -Context StoreContext -outputDir Data/Migrations
+update-database -Context StoreContext
+add-migration BasketAdded -Context StoreContext -outputDir Data/Migrations
 update-database -Context StoreContext
 
 add-migration InitialIdentity -Context AppIdentityDbContext -output Identity/Migrations
