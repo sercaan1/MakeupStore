@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Web.Constants;
 using Web.Interfaces;
+using Web.Models;
 
 namespace Web.Services
 {
@@ -23,6 +24,8 @@ namespace Web.Services
 
         public string AnonymousId => HttpContext.Request.Cookies[Constant.BASKET_COOKIENAME];
 
+        public string BuyerId => UserId ?? AnonymousId;
+
         public BasketViewModelService(IBasketService basketService, IHttpContextAccessor httpContextAccessor)
         {
             _basketService = basketService;
@@ -31,7 +34,7 @@ namespace Web.Services
 
         public async Task<int> AddItemToBasketAsync(int productId, int quantity)
         {
-            var buyerId = UserId ?? AnonymousId ?? CreateAnonymousId();
+            var buyerId = BuyerId ?? CreateAnonymousId();
             Basket basket = await _basketService.AddItemToBasketAsync(buyerId, productId, quantity);
             return basket.Items.Sum(x => x.Quantity);
         }
@@ -45,6 +48,33 @@ namespace Web.Services
                 IsEssential = true
             });
             return newId;
+        }
+
+        public async Task<NavBasketViewModel> GetNavBasketViewModelAsync()
+        {
+            return new NavBasketViewModel() { TotalItems = await _basketService.GetBasketItemCountAsync(BuyerId) };
+        }
+
+        public async Task<BasketViewModel> GetBasketViewModelAsync()
+        {
+            var basket = await _basketService.GetBasketAsync(BuyerId);
+
+            if (basket == null) return null;
+
+            return new BasketViewModel()
+            {
+                Id = basket.Id,
+                BuyerId = basket.BuyerId,
+                Items = basket.Items.Select(x => new BasketItemViewModel()
+                {
+                    Id = x.Id,
+                    ProductName = x.Product.Name,
+                    PictureUri = x.Product.PictureUri,
+                    ProductId = x.ProductId,
+                    Quantity = x.Quantity,
+                    UnitPrice = x.Product.Price
+                }).ToList()
+            };
         }
     }
 }

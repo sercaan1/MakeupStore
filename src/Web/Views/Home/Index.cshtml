@@ -28,7 +28,7 @@
                     <div class="product-name mt-2" title="@product.Name">@product.Name</div>
                     <div class="mt-3 d-flex justify-content-between">
                         <div>@product.PriceTry</div>
-                        <a data-add-item-to-basket="@product.Id" href="#" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Add to Basket">
+                        <a data-add-item-to-basket="@product.Id" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Add to Basket">
                             <i class="fa-solid fa-lg fa-cart-plus"></i>
                         </a>
                     </div>
@@ -86,9 +86,9 @@
     </ul>
 </nav>
 
-@section scripts{
+@section Scripts {
     <script>
-        $("[data-add-item-to-basket]").click(function () {
+        $("[data-add-item-to-basket]").click(function (event) {
             event.preventDefault();
             const id = $(this).data("add-item-to-basket");
             $.ajax({
@@ -96,9 +96,10 @@
                 type: "POST",
                 data: { productId: id },
                 success: function (data) {
-                    alert("eklendi, toplam öğe adedi: " + data.totalItems);
+                    $("#navBasketItemCount").text(data.totalItems);
+                    successMessage("Item successfully added to your cart");
                 }
-            })
-        })
+            });
+        });
     </script>
 }
