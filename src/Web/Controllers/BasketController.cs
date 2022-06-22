@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web.Interfaces;
 
@@ -17,6 +18,14 @@ namespace Web.Controllers
         {
             var basketViewModel = await _basketViewModelService.GetBasketViewModelAsync();
             return View(basketViewModel);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(Dictionary<int, int> quantities)
+        {
+            var basket = await _basketViewModelService.SetQuantities(quantities);
+            TempData["message"] = "Items updated successfully";
+            return View(basket);
         }
 
         [HttpPost]

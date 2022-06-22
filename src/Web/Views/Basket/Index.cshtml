@@ -28,6 +28,7 @@ else
 
                 <!-- Card -->
                 <div class="mb-3">
+                    <form asp-action="Index" method="post">
                     <div class="pt-4">
 
                         <div class="d-flex justify-content-between align-items-baseline">
@@ -56,7 +57,7 @@ else
                                             </div>
                                             <div>
                                                 <div class="number-input mb-0">
-                                                    <input class="quantity form-control" min="1" value="@item.Quantity" type="number">
+                                                    <input class="quantity form-control" min="1" name="quantities[@item.Id]" value="@item.Quantity" type="number">
                                                 </div>
                                             </div>
                                         </div>
@@ -77,6 +78,7 @@ else
                             <hr class="mb-4">
                         }
                     </div>
+                    </form>
                 </div>
                 <!-- Card -->
             </div>
