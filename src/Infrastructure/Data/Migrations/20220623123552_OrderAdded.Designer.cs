@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20220622142401_orderAdded")]
-    partial class orderAdded
+    [Migration("20220623123552_OrderAdded")]
+    partial class OrderAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -228,7 +228,6 @@ namespace Infrastructure.Data.Migrations
                                 .HasColumnType("character varying(90)");
 
                             b1.Property<string>("State")
-                                .IsRequired()
                                 .HasMaxLength(60)
                                 .HasColumnType("character varying(60)");
 

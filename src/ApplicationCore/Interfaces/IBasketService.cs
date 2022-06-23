@@ -21,6 +21,6 @@ namespace ApplicationCore.Interfaces
 
         Task DeleteBasketItemAsync(string buyerId, int basketItemId);
 
-        Task<Basket> SetQuantities(string buyerId, Dictionary<int, int> quantities);
+        Task<Basket> SetQuantitiesAsync(string buyerId, Dictionary<int, int> quantities);
     }
 }

@@ -17,11 +17,18 @@ const Toast = Swal.mixin({
         toast.addEventListener('mouseenter', Swal.stopTimer)
         toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
-})
+});
+
+function errorMessage(msg) {
+    Toast.fire({
+        icon: 'error',
+        title: msg
+    });
+}
 
 function successMessage(msg) {
     Toast.fire({
         icon: 'success',
         title: msg
-    })
+    });
 }
